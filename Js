@@ -1,0 +1,119 @@
+// Create stars
+function createStars() {
+    const starsCount = 150;
+    const body = document.querySelector('body');
+    
+    for (let i = 0; i < starsCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        // Randomize star properties
+        const size = Math.random() * 3 + 1;
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+        const delay = Math.random() * 4;
+        
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${posX}px`;
+        star.style.top = `${posY}px`;
+        star.style.animationDelay = `${delay}s`;
+        
+        body.appendChild(star);
+    }
+}
+
+// Smooth scrolling for navigation links
+document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        window.scrollTo({
+            top: targetElement.offsetTop,
+            behavior: 'smooth'
+        });
+    });
+});
+
+// Form submission
+const contactForm = document.querySelector('.contact-form');
+contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    // Simple validation
+    if (name && email && message) {
+        // In a real application, you would send this data to a server
+        alert('Thank you for your message! I will get back to you soon.');
+        contactForm.reset();
+    } else {
+        alert('Please fill in all fields.');
+    }
+});
+
+// Initialize when page loads
+window.addEventListener('load', function() {
+    createStars();
+});
+
+// Parallax effect for moon
+window.addEventListener('scroll', function() {
+    const moon = document.getElementById('moon');
+    const scrolled = window.pageYOffset;
+    const rate = scrolled * -0.5;
+    
+    moon.style.transform = `translateY(${rate}px) rotate(${rate * 0.1}deg)`;
+});
+
+// Additional animations for project cards
+document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-10px) scale(1.02)';
+        this.style.boxShadow = '0 10px 30px rgba(160, 200, 255, 0.3)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+        this.style.boxShadow = 'none';
+    });
+});
+
+// Text animation for headings
+function animateHeadings() {
+    const headings = document.querySelectorAll('h1, h2');
+    
+    headings.forEach(heading => {
+        const letters = heading.textContent.split('');
+        heading.textContent = '';
+        
+        letters.forEach((letter, i) => {
+            const span = document.createElement('span');
+            span.textContent = letter;
+            span.style.animationDelay = `${i * 0.1}s`;
+            span.style.display = 'inline-block';
+            span.style.opacity = '0';
+            span.style.animation = 'fadeIn 0.5s forwards';
+            heading.appendChild(span);
+        });
+    });
+}
+
+// Add the fadeIn keyframes dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+`;
+document.head.appendChild(style);
+
+// Run heading animation when page loads
+window.addEventListener('load', animateHeadings);
